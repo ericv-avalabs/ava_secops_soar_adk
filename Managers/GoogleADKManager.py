@@ -442,6 +442,32 @@ class GoogleADKManager:
             tool_filter=tool_filter
         )
 
+    def init_wiz_mcp_toolset(self, client_id, client_secret, data_center, mcp_url="https://mcp.app.wiz.io", tool_filter=None):
+        """
+        Initializes an McpToolset for the remote Wiz MCP server using Wiz MCP Integration service account headers.
+        Wiz exchanges the client credentials server-side, so static headers are sufficient (no token refresh needed).
+        """
+        creds = {
+            "Wiz-Client-Id": str(client_id or "").strip(),
+            "Wiz-Client-Secret": str(client_secret or "").strip(),
+            "Wiz-DataCenter": str(data_center or "").strip(),
+        }
+        # Wiz silently falls back to interactive OAuth if any header is missing, which would hang a headless SOAR run.
+        missing = [k for k, v in creds.items() if not v]
+        if missing:
+            raise ValueError(f"Wiz MCP service account authentication requires all of: {', '.join(creds)}. Missing: {', '.join(missing)}")
+
+        self.logger.info(f"Initializing Wiz MCP Toolset for URL: {mcp_url} (Data Center: {creds['Wiz-DataCenter']}) with tool_filter: {tool_filter}")
+
+        return McpToolset(
+            connection_params=StreamableHTTPConnectionParams(
+                url=mcp_url,
+                headers=creds,
+                timeout=30.0 # Wiz domain experts can take longer to respond than Google-hosted MCP tools
+            ),
+            tool_filter=tool_filter
+        )
+
     def test_connection(self):
         """Validates connectivity by initializing a minimal agent."""
         try:

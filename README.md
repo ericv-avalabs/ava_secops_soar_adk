@@ -31,6 +31,7 @@ The integration provides 13 specialized SOAR actions:
 | **`Run Code Execution Agent Sandbox`** | Executes Python code within a dedicated, isolated Vertex AI Agent Engine container sandbox. | `User Prompt`, `Thinking Budget`, `Agent Engine Resource Name` |
 | **`Run Google Search Agent`** | Performs live web searches and OSINT threat intelligence research using Google Search grounding. | `User Prompt`, `Thinking Budget` |
 | **`Run Hosted MCP ADK Agent`** | Connects to Google-hosted MCP servers with self-refreshing OAuth headers to invoke enterprise security toolsets. | `User Prompt`, `Thinking Budget`, `Tool Filter` |
+| **`Run Wiz MCP ADK Agent`** | Connects to the remote Wiz MCP server with Wiz MCP Integration service account credentials to investigate cloud issues, vulnerabilities, detections, and inventory. | `User Prompt`, `Thinking Budget`, `Wiz Domains` |
 | **`Run ADK Memory Bank Agent`** | Multi-turn stateful agent leveraging short-term or long-term session memory banks across playbook steps. | `User Prompt`, `Session ID`, `Memory Mode`, `Preload Memory` |
 | **`Run ADK GCS Agent`** | Autonomous agent equipped with Google Cloud Storage tools for reading, writing, and inspecting bucket artifacts. | `User Prompt`, `Thinking Budget`, `Allow GCS Write`, `Allow GCS Admin` |
 | **`Run ADK Skill Registry Agent`** | Connects to the GCP Skill Registry to dynamically discover, search, load, and execute remote security skills and runbooks. | `User Prompt`, `Thinking Budget` |
@@ -57,6 +58,10 @@ Configure the instance settings under **Integrations > Google ADK > Configure In
 | `RAG Corpus Name` | String | Optional | `None` | Vertex AI RAG Corpus display name or numeric resource ID. |
 | `RAG GCS Bucket` | String | Optional | `None` | Cloud Storage bucket name for RAG document ingestion. |
 | `Agent Engine Resource Name` | String | Optional | `None` | Vertex AI Agent Engine resource path for isolated Python sandbox code execution. |
+| `Wiz MCP Server URL` | String | Optional | `https://mcp.app.wiz.io` | Endpoint URL for the remote Wiz MCP server. |
+| `Wiz Client ID` | String | Optional | `None` | Client ID of the Wiz MCP Integration service account. Required for `Run Wiz MCP ADK Agent`. |
+| `Wiz Client Secret` | Password | Optional | `None` | Client Secret of the Wiz MCP Integration service account. Required for `Run Wiz MCP ADK Agent`. |
+| `Wiz Data Center` | String | Optional | `None` | Wiz tenant data center (e.g. `us17`), from **Tenant Info > Data Centers and Regions**. Required for `Run Wiz MCP ADK Agent`. |
 
 ---
 
@@ -71,6 +76,7 @@ Configure the instance settings under **Integrations > Google ADK > Configure In
 │   ├── Run Code Execution Agent Sandbox.py / ...
 │   ├── Run Google Search Agent.py / ...
 │   ├── Run Hosted MCP ADK Agent.py / ...
+│   ├── Run Wiz MCP ADK Agent.py / ...
 │   ├── Run ADK Memory Bank Agent.py / ...
 │   ├── Run ADK GCS Agent.py / ...
 │   ├── Run ADK Skill Registry Agent.py / ...
